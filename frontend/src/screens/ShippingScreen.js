@@ -1,0 +1,70 @@
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import Header from "../components/Header";
+import { saveShippingAddress } from "../Redux/Actions/CartAction";
+
+const ShippingScreen = ({ history }) => {
+  // window.scrollTo(0, 0);
+
+  const cart = useSelector((state) => state.cart);
+  const { shippingAddress } = cart;
+
+  const [address, setAdress] = useState(shippingAddress.address);
+  const [city, setCity] = useState(shippingAddress.city);
+  const [potalCode, setPotalCode] = useState(shippingAddress.potalCode);
+  const [country, setCountry] = useState(shippingAddress.country);
+
+  const dispatch = useDispatch();
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    dispatch(saveShippingAddress({ address, city, potalCode, country }));
+    history.push("/payment")
+  };
+
+  return (
+    <>
+      <Header />
+      <div className="container d-flex justify-content-center align-items-center login-center">
+        <form
+          className="Login col-md-8 col-lg-4 col-11"
+          onSubmit={submitHandler}
+        >
+          <h6>ĐỊA CHỈ GIAO HÀNG</h6>
+          <input
+            type="text"
+            required
+            placeholder="Nhập địa chỉ"
+            value={address || ''}
+            onChange={(e) => setAdress(e.target.value)} />
+          <input
+            type="text"
+            required
+            placeholder="Nhập thành phố"
+            value={city || ''}
+            onChange={(e) => setCity(e.target.value)} />
+          <input
+            type="text"
+            placeholder="Mã bưu chính"
+            required
+            value={potalCode || ''}
+            onChange={(e) => setPotalCode(e.target.value)} />
+          <input
+            type="text"
+            placeholder="Nhập tên nước"
+            required
+            value={country || ''}
+            onChange={(e) => setCountry(e.target.value)} />
+          <button type="submit">
+            <Link to="/payment" className="text-white">
+              Tiếp tục
+            </Link>
+          </button>
+        </form>
+      </div>
+    </>
+  );
+};
+
+export default ShippingScreen;
