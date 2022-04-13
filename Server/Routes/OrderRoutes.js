@@ -1,11 +1,11 @@
-import express, { response } from "express";
+import express from "express";
 import asyncHandler from "express-async-handler";
 import protect from "../Middleware/authMiddleware.js";
 import Order from "../Models/OderModel.js";
 
 const orderRoutes = express.Router();
 
-//LOGIN
+//ORDER
 orderRoutes.post(
     "/",
     protect,
@@ -24,6 +24,7 @@ orderRoutes.post(
         } else {
             const order = new Order({
                 orderItems,
+                user: req.user._id,
                 shippingAddress,
                 paymentMethod,
                 itemsPrice,

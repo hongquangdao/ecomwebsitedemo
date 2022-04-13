@@ -9,9 +9,9 @@ const orderSchema = mongoose.Schema(
         },
         otherItems: [
             {
-                name: { type: String, require: true },
-                qty: { type: Number, require: true },
-                price: { type: Number, require: true },
+                name: { type: String, required: true },
+                qty: { type: Number, required: true },
+                price: { type: Number, required: true },
                 product: {
                     type: String,
                     required: true,
@@ -19,7 +19,7 @@ const orderSchema = mongoose.Schema(
                 },
             }
         ],
-        shippimgAddress: {
+        shippingAddress: {
             address: { type: String, required: true },
             city: { type: String, required: true },
             postalCode: { type: String, required: true },

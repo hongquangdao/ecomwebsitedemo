@@ -12,14 +12,14 @@ const ShippingScreen = ({ history }) => {
 
   const [address, setAdress] = useState(shippingAddress.address);
   const [city, setCity] = useState(shippingAddress.city);
-  const [potalCode, setPotalCode] = useState(shippingAddress.potalCode);
+  const [postalCode, setPostalCode] = useState(shippingAddress.postalCode);
   const [country, setCountry] = useState(shippingAddress.country);
 
   const dispatch = useDispatch();
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(saveShippingAddress({ address, city, potalCode, country }));
+    dispatch(saveShippingAddress({ address, city, postalCode, country }));
     history.push("/payment")
   };
 
@@ -48,8 +48,8 @@ const ShippingScreen = ({ history }) => {
             type="text"
             placeholder="Mã bưu chính"
             required
-            value={potalCode || ''}
-            onChange={(e) => setPotalCode(e.target.value)} />
+            value={postalCode || ''}
+            onChange={(e) => setPostalCode(e.target.value)} />
           <input
             type="text"
             placeholder="Nhập tên nước"

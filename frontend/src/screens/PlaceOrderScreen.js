@@ -32,22 +32,23 @@ const PlaceOrderScreen = ({ history }) => {
   useEffect(() => {
     if (success) {
       history.push(`/order/${order._id}`);
-      dispatch(createOrder({type:ORDER_CREATE_RESET}))
-      dispatch({type:ORDER_CREATE_RESET});
+      dispatch({ type: ORDER_CREATE_RESET });
     }
   }, [history, dispatch, success, order]);
 
 
   const placeOrderHandler = (e) => {
     e.preventDefault();
-    createOrder({
-      orderItems: cart.cartItems,
-      shippingAddress: cart.shippingAddress,
-      paymentMethod: cart.paymentMethod,
-      itemsPrice: cart.itemsPrice,
-      shippingPrice: cart.shippingPrice,
-      totalPrice: cart.totalPrice,
-    })
+    dispatch(
+      createOrder({
+        orderItems: cart.cartItems,
+        shippingAddress: cart.shippingAddress,
+        paymentMethod: cart.paymentMethod,
+        itemsPrice: cart.itemsPrice,
+        shippingPrice: cart.shippingPrice,
+        totalPrice: cart.totalPrice,
+      })
+    )
   };
 
   return (
@@ -173,9 +174,13 @@ const PlaceOrderScreen = ({ history }) => {
                 </button>
               )
             }
-            {/* <div className="my-3 col-12">
-                <Message variant="alert-danger">{error}</Message>
-              </div> */}
+            {
+              error && (
+                <div className="my-3 col-12">
+                  <Message variant="alert-danger">{error}</Message>
+                </div>
+              )
+            }
           </div>
         </div>
       </div>
