@@ -60,7 +60,7 @@ const ProfileScreen = () => {
                     aria-controls="v-pills-home"
                     aria-selected="true"
                   >
-                    Profile Settings
+                    CÀI ĐẶT HỒ SƠ
                   </button>
                   <button
                     class="nav-link d-flex justify-content-between"
@@ -72,7 +72,7 @@ const ProfileScreen = () => {
                     aria-controls="v-pills-profile"
                     aria-selected="false"
                   >
-                    Orders List
+                    DANH SÁCH ĐƠN HÀNG
                     <span className="badge2">3</span>
                   </button>
                 </div>

@@ -5,7 +5,7 @@ import Order from "../Models/OderModel.js";
 
 const orderRoutes = express.Router();
 
-//ORDER
+//CREATE ORDER
 orderRoutes.post(
     "/",
     protect,
@@ -34,6 +34,26 @@ orderRoutes.post(
 
             const createOrder = await order.save();
             res.status(201).json(createOrder);
+        }
+    })
+);
+
+
+//GET ORDER BY ID
+orderRoutes.get(
+    "/:id",
+    protect,
+    asyncHandler(async (req, res) => {
+        const order = await Order.findById(req.params.id).populate(
+            "user",
+            "name email",
+        );
+
+        if (order) {
+            res.json(order);
+        } else {
+            res.status(404);
+            throw new Error("Không tìm thấy Order")
         }
     })
 );
