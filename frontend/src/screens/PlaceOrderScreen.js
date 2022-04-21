@@ -35,7 +35,7 @@ const PlaceOrderScreen = ({ history }) => {
       dispatch({ type: ORDER_CREATE_RESET });
     }
   }, [history, dispatch, success, order]);
-  
+
   const placeOrderHandler = (e) => {
     e.preventDefault();
     dispatch(
@@ -59,7 +59,7 @@ const PlaceOrderScreen = ({ history }) => {
             <div className="row ">
               <div className="col-md-4 center">
                 <div className="alert-success order-box">
-                  <i class="fas fa-user"></i>
+                  <i className="fas fa-user"></i>
                 </div>
               </div>
               <div className="col-md-8 center">

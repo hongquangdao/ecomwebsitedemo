@@ -17,6 +17,16 @@ const OrderScreen = ({ match }) => {
   const orderDetails = useSelector((state) => state.orderDetails);
   const { order, loading, error } = orderDetails;
 
+  // vì ban đầu bắt đầu request loading: true, OrderItems: []; nếu không check sẽ bắn ra lỗi reading undefind khi refresh lại trang.
+  if (!loading) {
+    const toDecimals = (num) => {
+      return (Math.round(num * 100) / 100).toFixed(2);
+    }
+    order.itemsPrice = toDecimals(
+      order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0)
+    )
+  }
+
   useEffect(() => {
     dispatch(getOrderDetails(orderId))
   }, [dispatch, orderId])
@@ -165,19 +175,19 @@ const OrderScreen = ({ match }) => {
                           <td>
                             <strong>Sản phẩm</strong>
                           </td>
-                          <td>$234</td>
+                          <td>${order.itemsPrice} <p style={{ color: 'red', fontSize: "10px" }}>{order.itemsPrice > 1000 ? "(Đơn hàng free ship)" : ""}</p></td>
                         </tr>
                         <tr>
                           <td>
                             <strong>Shipping</strong>
                           </td>
-                          <td>$566</td>
+                          <td>${order.shippingPrice}</td>
                         </tr>
                         <tr>
                           <td>
-                            <strong>Tổng cộng</strong>
+                            <strong>Tổng tiền</strong>
                           </td>
-                          <td>$567</td>
+                          <td>${order.totalPrice}</td>
                         </tr>
                       </tbody>
                     </table>
