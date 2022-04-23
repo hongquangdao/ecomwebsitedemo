@@ -1,23 +1,30 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "./../components/Header";
 import { PayPalButton } from "react-paypal-button-v2";
 import { useDispatch, useSelector } from "react-redux";
-import { getOrderDetails } from "../Redux/Actions/OrderActions";
 import Loading from "../components/LoadingError/Loading";
 import Message from "../components/LoadingError/Error";
 import moment from "moment";
 import 'moment/locale/vi';
+import axios from "axios";
+import { ORDER_PAY_RESET } from "../Redux/Constants/OrderConstants";
+import { getOrderDetails, payOrder } from "../Redux/Actions/OrderActions";
 
 const OrderScreen = ({ match }) => {
   window.scrollTo(0, 0);
 
+  const [sdkReady, setSdkReady] = useState(false);
   const orderId = match.params.id;
   const dispatch = useDispatch();
+
   const orderDetails = useSelector((state) => state.orderDetails);
   const { order, loading, error } = orderDetails;
 
-  // vì ban đầu bắt đầu request loading: true, OrderItems: []; nếu không check sẽ bắn ra lỗi reading undefind khi refresh lại trang.
+  const orderPay = useSelector((state) => state.orderPay);
+  const { loading: loadingPay, success: successPay } = orderPay;
+
+  // vì ban đầu bắt đầu request loading: true, orderItems: []; nếu không check sẽ bắn ra lỗi reading undefind orderItemskhi refresh lại trang.
   if (!loading) {
     const toDecimals = (num) => {
       return (Math.round(num * 100) / 100).toFixed(2);
@@ -28,8 +35,33 @@ const OrderScreen = ({ match }) => {
   }
 
   useEffect(() => {
-    dispatch(getOrderDetails(orderId))
-  }, [dispatch, orderId])
+    const addPayPalScript = async () => {
+      const { data: clientId } = await axios.get("/api/config/paypal");
+      const script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
+      script.async = true;
+      script.onload = () => {
+        setSdkReady(true);
+      }
+      document.body.appendChild(script);
+    }
+    if (!order || successPay) {
+      dispatch({ type: ORDER_PAY_RESET });
+      dispatch(getOrderDetails(orderId));
+    } else if (!order.isPaid) {
+      if (!window.paypal) {
+        addPayPalScript();
+      } else {
+        setSdkReady(true);
+      }
+    }
+  }, [dispatch, orderId, successPay, order])
+
+  const successPaymentHandle = (paymentResult) => {
+    console.log(paymentResult);
+    dispatch(payOrder(orderId, paymentResult))
+  }
 
   return (
     <>
@@ -191,9 +223,26 @@ const OrderScreen = ({ match }) => {
                         </tr>
                       </tbody>
                     </table>
-                    <div className="col-12">
-                      <PayPalButton amount={345} />
-                    </div>
+                    {
+                      !order.isPaid && (
+                        <div className="col-12">
+                          {loadingPay && <Loading />}
+                          {
+                            !sdkReady ?
+                              (
+                                <Loading />
+                              )
+                              :
+                              (
+                                <PayPalButton
+                                  amount={order.totalPrice}
+                                  onSuccess={successPaymentHandle}
+                                />
+                              )
+                          }
+                        </div>
+                      )
+                    }
                   </div>
                 </div>
               </div>
