@@ -38,7 +38,6 @@ orderRoutes.post(
     })
 );
 
-
 //GET ORDER BY ID
 orderRoutes.get(
     "/:id",
@@ -57,6 +56,16 @@ orderRoutes.get(
     })
 );
 
+//USER LOGIN ORDERS
+orderRoutes.get(
+    "/",
+    protect,
+    asyncHandler(async (req, res) => {
+        const order = await Order.find({ user: req.user._id }).sort({ _id: -1 });
+        res.json(order);
+    })
+);
+
 // ORDER IS PAID
 orderRoutes.put(
     "/:id/pay",
@@ -69,8 +78,8 @@ orderRoutes.put(
             order.paymentResult = {
                 id: req.body.id,
                 status: req.body.status,
-                update_time : req.body.update_time,
-                email_address : req.body.email_address
+                update_time: req.body.update_time,
+                email_address: req.body.email_address
             }
             const updateOrder = await order.save();
             res.json(updateOrder);

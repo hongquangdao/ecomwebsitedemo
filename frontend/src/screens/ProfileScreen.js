@@ -6,6 +6,7 @@ import { getUserDetails } from "../Redux/Actions/UserAction";
 import Orders from "./../components/profileComponents/Orders";
 import moment from "moment";
 import 'moment/locale/vi';
+import { listMyOrders } from "../Redux/Actions/OrderActions";
 
 const ProfileScreen = () => {
   window.scrollTo(0, 0);
@@ -15,8 +16,12 @@ const ProfileScreen = () => {
   const userDetails = useSelector((state) => state.userDetails);
   const { user } = userDetails;
 
+  const orderMyList = useSelector((state) => state.orderListMy);
+  const { orders, loading, error } = orderMyList;
+
   useEffect(() => {
-    dispatch(getUserDetails("profile"))
+    dispatch(listMyOrders());
+    dispatch(getUserDetails("profile"));
   }, [dispatch])
 
 
@@ -73,7 +78,7 @@ const ProfileScreen = () => {
                     aria-selected="false"
                   >
                     DANH SÁCH ĐƠN HÀNG
-                    <span className="badge2">3</span>
+                    <span className="badge2">{orders ? orders.length : 0}</span>
                   </button>
                 </div>
               </div>
@@ -99,7 +104,7 @@ const ProfileScreen = () => {
               role="tabpanel"
               aria-labelledby="v-pills-profile-tab"
             >
-              <Orders />
+              <Orders orders={orders} loading={loading} error={error} />
             </div>
           </div>
         </div>
