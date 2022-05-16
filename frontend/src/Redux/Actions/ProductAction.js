@@ -1,5 +1,13 @@
 import axios from "axios";
 import {
+    ORDER_DETAILS_FAIL,
+    ORDER_DETAILS_REQUEST,
+    ORDER_DETAILS_SUCCESS
+} from "../Constants/OrderConstants.js";
+import {
+    PRODUCT_CREATE_REVIEW_FAIL,
+    PRODUCT_CREATE_REVIEW_REQUEST,
+    PRODUCT_CREATE_REVIEW_SUCCESS,
     PRODUCT_LIST_DETAILS_FAIL,
     PRODUCT_LIST_DETAILS_REQUEST,
     PRODUCT_LIST_DETAILS_SUCCESS,
@@ -7,6 +15,7 @@ import {
     PRODUCT_LIST_REQUEST,
     PRODUCT_LIST_SUCCESS
 } from "../Constants/ProductConstant.js";
+import { logout } from "./UserAction.js";
 
 // LIST PRODUCT
 export const listProduct = () => async (dispatch) => {
@@ -43,6 +52,72 @@ export const detailProduct = (id) => async (dispatch) => {
                 error.response && error.response.data.message
                     ? error.response.data.message
                     : error.message,
+        })
+    }
+};
+
+//ORDER DETAILS
+export const getOrderDetails = (id) => async (dispatch, getState) => {
+    try {
+        dispatch({ type: ORDER_DETAILS_REQUEST });
+        const {
+            userLogin: { userInfo },
+        } = getState()
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userInfo.token}`,
+            }
+        }
+        const { data } = await axios.get(`/api/orders/${id}`, config);
+        dispatch({
+            type: ORDER_DETAILS_SUCCESS,
+            payload: data
+        });
+    } catch (error) {
+        const message = error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message;
+        if (message === "Not authorized, token failed") {
+            dispatch(logout())
+        }
+        dispatch({
+            type: ORDER_DETAILS_FAIL,
+            payload: message,
+        })
+    }
+}
+
+//PRODUCT REVIEW CREATE
+export const createProductReview = (productId, review) => async (dispatch, getState) => {
+    try {
+        dispatch({ type: PRODUCT_CREATE_REVIEW_REQUEST });
+        const {
+            userLogin: { userInfo },
+        } = getState()
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${userInfo.token}`,
+            }
+        };
+        await axios.post(
+            `/api/products/${productId}/review`,
+            review,
+            config
+        );
+        dispatch({
+            type: PRODUCT_CREATE_REVIEW_SUCCESS
+        });
+    } catch (error) {
+        const message = error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message;
+        if (message === "Not authorized, token failed") {
+            dispatch(logout())
+        }
+        dispatch({
+            type: PRODUCT_CREATE_REVIEW_FAIL,
+            payload: message,
         })
     }
 };

@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { logout } from "../Redux/Actions/UserAction";
+import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
+import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone';
 
 const Header = () => {
 
-  const dispatch =  useDispatch();
+  const [keyword, setKeyword] = useState();
+  const dispatch = useDispatch();
+  let history = useHistory();
+
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
   const userLogin = useSelector((state) => state.userLogin);
@@ -13,6 +18,10 @@ const Header = () => {
 
   const logoutHandler = () => {
     dispatch(logout())
+  }
+
+  const submidHandler = () => {
+
   }
 
   return (
@@ -41,6 +50,55 @@ const Header = () => {
               <Link to="">
                 <i className="fab fa-pinterest-p"></i>
               </Link>
+              <div className="col-md-6 d-flex align-items-center justify-content-end Login-Register">
+                <div className="logo-user">
+                  <Link to="/profile" >
+                    <AccountCircleTwoToneIcon sx={{ fontSize: "28px" }} />
+                  </Link>
+                </div>
+                {
+                  userInfo ?
+                    (
+                      <div className="btn-group">
+                        <span
+                          type="button"
+                          className="name-button dropdown-toggle"
+                          data-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                        >
+                          <span>Hi,{userInfo.name}</span>
+                        </span>
+                        <div className="dropdown-menu">
+                          <Link className="dropdown-item" to="/profile">
+                            Hồ sơ
+                          </Link>
+                          <Link
+                            className="dropdown-item" to="#"
+                            onClick={logoutHandler}
+                          >
+                            Đăng xuất
+                          </Link>
+                        </div>
+                      </div>
+                    )
+                    :
+                    (
+                      <>
+                        <Link to="/login">
+                          Đăng nhập
+                        </Link>
+                        <Link to="/register">
+                          Đăng kí
+                        </Link>
+                      </>
+                    )
+                }
+                <Link to="/cart" className="pc-header">
+                  <ShoppingCartCheckoutIcon sx={{ fontSize: "28px" }} />
+                  <span className="badge">{cartItems.length}</span>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
@@ -48,6 +106,7 @@ const Header = () => {
       {/* Header */}
       <div className="header">
         <div className="container">
+
           {/* MOBILE HEADER */}
           <div className="mobile-header">
             <div className="container ">
@@ -58,58 +117,8 @@ const Header = () => {
                   </Link>
                 </div>
                 <div className="col-6 d-flex align-items-center justify-content-end Login-Register">
-                  {
-                    userInfo ?
-                      (
-                        <div className="btn-group">
-                          <button
-                            type="button"
-                            className="name-button dropdown-toggle"
-                            data-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false"
-                          >
-                            <i className="fas fa-user"></i>
-                          </button>
-                          <div className="dropdown-menu">
-                            <Link className="dropdown-item" to="/profile">
-                              Hồ sơ
-                            </Link>
-                            <Link
-                              className="dropdown-item" to="#"
-                              onClick={logoutHandler}
-                            >
-                              Đăng xuất
-                            </Link>
-                          </div>
-                        </div>
-                      )
-                      :
-                      (
-                        <div className="btn-group">
-                          <button
-                            type="button"
-                            className="name-button dropdown-toggle"
-                            data-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false"
-                          >
-                            <i class="fas fa-user"></i>
-                          </button>
-                          <div className="dropdown-menu">
-                            <Link className="dropdown-item" to="/login">
-                              Đăng nhập
-                            </Link>
-                            <Link className="dropdown-item" to="/register">
-                              Đăng kí
-                            </Link>
-                          </div>
-                        </div>
-                      )
-                  }
-
                   <Link to="/cart" className="cart-mobile-icon">
-                    <i className="fas fa-shopping-bag"></i>
+                    <ShoppingCartCheckoutIcon style={{ color: "#634520" }} sx={{ fontSize: "30px" }} />
                     <span className="badge">{cartItems.length}</span>
                   </Link>
                 </div>
@@ -144,55 +153,8 @@ const Header = () => {
                     className="form-control rounded search"
                     placeholder="Tìm kiếm"
                   />
-                  <button type="submit" className="search-button">
-                    Tìm kiếm
-                  </button>
+                  <button className="search-button" > Tìm kiếm</button>
                 </form>
-              </div>
-              <div className="col-md-3 d-flex align-items-center justify-content-end Login-Register">
-                {
-                  userInfo ?
-                    (
-                      <div className="btn-group">
-                        <button
-                          type="button"
-                          className="name-button dropdown-toggle"
-                          data-toggle="dropdown"
-                          aria-haspopup="true"
-                          aria-expanded="false"
-                        >
-                          Xin chào, {userInfo.name}
-                        </button>
-                        <div className="dropdown-menu">
-                          <Link className="dropdown-item" to="/profile">
-                            Hồ sơ
-                          </Link>
-
-                          <Link
-                            className="dropdown-item" to="#"
-                            onClick={logoutHandler}
-                          >
-                            Đăng xuất
-                          </Link>
-                        </div>
-                      </div>
-                    )
-                    :
-                    (
-                      <>
-                        <Link to="/login">
-                          Đăng nhập
-                        </Link>
-                        <Link to="/register">
-                          Đăng kí
-                        </Link>
-                      </>
-                    )
-                }
-                <Link to="/cart">
-                  <i className="fas fa-shopping-bag"></i>
-                  <span className="badge">{cartItems.length}</span>
-                </Link>
               </div>
             </div>
           </div>

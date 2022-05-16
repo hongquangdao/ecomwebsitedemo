@@ -16,6 +16,7 @@ import {
 } from "../Constants/UserConstant";
 import { ORDER_LIST_MY_RESET } from "../Constants/OrderConstants"
 import axios from "axios";
+import { PRODUCT_CREATE_REVIEW_RESET } from "../Constants/ProductConstant";
 
 export const login = (email, password) => async (dispatch) => {
     try {
@@ -48,6 +49,7 @@ export const logout = () => (dispatch) => {
     dispatch({ type: USER_LOGOUT });
     dispatch({ type: USER_DETAILS_RESET });
     dispatch({ type: ORDER_LIST_MY_RESET });
+    dispatch({ type: PRODUCT_CREATE_REVIEW_RESET });
     //optional
     document.location.href = "/login";
 }
