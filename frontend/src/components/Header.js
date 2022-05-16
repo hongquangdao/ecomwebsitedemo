@@ -42,15 +42,18 @@ const Header = () => {
                 <i className="fab fa-instagram"></i>
               </Link>
               <Link to="">
+                <i className="fab fa-twitter"></i>
+              </Link>
+              <Link to="">
                 <i className="fab fa-linkedin-in"></i>
               </Link>
-              <Link to="">
+              <Link to="" className="pc-header">
                 <i className="fab fa-youtube"></i>
               </Link>
-              <Link to="">
+              <Link to="" className="pc-header">
                 <i className="fab fa-pinterest-p"></i>
               </Link>
-              <div className="col-md-6 d-flex align-items-center justify-content-end Login-Register">
+              <div className="col-md-4 d-flex align-items-center justify-content-end Login-Register">
                 <div className="logo-user">
                   <Link to="/profile" >
                     <AccountCircleTwoToneIcon sx={{ fontSize: "28px" }} />
@@ -146,7 +149,7 @@ const Header = () => {
                   <img alt="logo" src="/images/laptop.png" />
                 </Link>
               </div>
-              <div className="col-md-6 col-8 d-flex align-items-center">
+              <div className="col-md-4 col-4 d-flex align-items-center">
                 <form className="input-group">
                   <input
                     type="Search"
@@ -155,6 +158,11 @@ const Header = () => {
                   />
                   <button className="search-button" > Tìm kiếm</button>
                 </form>
+              </div>
+              <div className="col-md-3 col-2 d-flex align-items-center">
+                <Link className="navbar-brand" to="/">
+                  <img alt="logo" src="/images/download.jpeg" />
+                </Link>
               </div>
             </div>
           </div>
