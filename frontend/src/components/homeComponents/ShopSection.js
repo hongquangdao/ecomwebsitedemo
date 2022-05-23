@@ -7,16 +7,19 @@ import { useDispatch, useSelector } from 'react-redux'
 import Loading from "../LoadingError/Loading";
 import Message from "../LoadingError/Error";
 
-const ShopSection = () => {
+const ShopSection = (props) => {
+
+  const { keyword } = props;
+
   const dispatch = useDispatch();
 
-  const productList = useSelector((state) => state.productList)
+  const productList = useSelector((state) => state.productList);
 
   const { loading, error, products } = productList;
 
   useEffect(() => {
-    dispatch(listProduct())
-  }, [dispatch])
+    dispatch(listProduct(keyword))
+  }, [dispatch, keyword]);
 
   return (
     <>
@@ -75,6 +78,6 @@ const ShopSection = () => {
       </div>
     </>
   );
-};
+}
 
 export default ShopSection;

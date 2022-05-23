@@ -4,9 +4,10 @@ import { Link, useHistory } from "react-router-dom";
 import { logout } from "../Redux/Actions/UserAction";
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone';
+import LoyaltyTwoToneIcon from '@mui/icons-material/LoyaltyTwoTone';
+import DesktopWindowsTwoToneIcon from '@mui/icons-material/DesktopWindowsTwoTone';
 
 const Header = () => {
-
   const [keyword, setKeyword] = useState();
   const dispatch = useDispatch();
   let history = useHistory();
@@ -20,9 +21,15 @@ const Header = () => {
     dispatch(logout())
   }
 
-  const submidHandler = () => {
-
+  const submitHandler = (e) => {
+    e.preventDefault();
+    if (keyword.trim()) {
+      history.push(`/search/${keyword}`);
+    } else {
+      history.push("/")
+    }
   }
+  console.log(keyword);
 
   return (
     <div>
@@ -114,23 +121,34 @@ const Header = () => {
           <div className="mobile-header">
             <div className="container ">
               <div className="row ">
-                <div className="col-6 d-flex align-items-center">
+                <div className="col-4 d-flex align-items-center">
                   <Link className="navbar-brand" to="/">
-                    <img alt="logo" src="/images/laptop.png" />
+                    <img alt="logo" style={{ width: 100, height: 100 }} src="/images/laptop.png" />
                   </Link>
                 </div>
-                <div className="col-6 d-flex align-items-center justify-content-end Login-Register">
+                <div className="col-8 d-flex align-items-center justify-content-end Login-Register">
+                  <Link to="/cart" className="desktop-mobile-icon">
+                    <DesktopWindowsTwoToneIcon style={{ color: "#634520" }} sx={{ fontSize: "30px" }} />
+                    <div style={{ color: "#634520", fontSize: "8px" }}>Build PC</div>
+                  </Link>
                   <Link to="/cart" className="cart-mobile-icon">
+                    <LoyaltyTwoToneIcon style={{ color: "#634520" }} sx={{ fontSize: "30px" }} />
+                    <div className="badge">{cartItems.length}</div>
+                    <div style={{ color: "#634520", fontSize: "8px" }}>Khuyến mãi</div>
+                  </Link>
+                  <Link to="/cart" className="loyal-mobile-icon">
                     <ShoppingCartCheckoutIcon style={{ color: "#634520" }} sx={{ fontSize: "30px" }} />
-                    <span className="badge">{cartItems.length}</span>
+                    <div className="badge">{cartItems.length}</div>
+                    <div style={{ color: "#634520", fontSize: "8px" }}>Giỏ hàng</div>
                   </Link>
                 </div>
                 <div className="col-12 d-flex align-items-center">
-                  <form className="input-group">
+                  <form className="input-group" onSubmit={submitHandler}>
                     <input
                       type="search"
                       className="form-control rounded search"
                       placeholder="Tìm kiếm"
+                      onChange={(e) => setKeyword(e.target.value)}
                     />
                     <button type="submit" className="search-button">
                       Tìm kiếm
@@ -144,24 +162,32 @@ const Header = () => {
           {/* PC HEADER */}
           <div className="pc-header">
             <div className="row">
-              <div className="col-md-3 col-4 d-flex align-items-center">
+              <div className="col-md-3 col-3 d-flex align-items-center">
                 <Link className="navbar-brand" to="/">
                   <img alt="logo" src="/images/laptop.png" />
                 </Link>
               </div>
-              <div className="col-md-4 col-4 d-flex align-items-center">
-                <form className="input-group">
+              <div className="col-md-6 col-6 d-flex align-items-center">
+                <form className="input-group" onSubmit={submitHandler}  >
                   <input
                     type="Search"
                     className="form-control rounded search"
                     placeholder="Tìm kiếm"
+                    onChange={(e) => setKeyword(e.target.value)}
                   />
-                  <button className="search-button" > Tìm kiếm</button>
+                  <button className="search-button" type="submit"> Tìm kiếm</button>
                 </form>
               </div>
-              <div className="col-md-3 col-2 d-flex align-items-center">
-                <Link className="navbar-brand" to="/">
-                  <img alt="logo" src="/images/download.jpeg" />
+              <div className="col-md-1 col-1 d-flex align-items-center">
+                <Link className="navbar-brand" to="/BuildPC">
+                  <DesktopWindowsTwoToneIcon style={{ color: "#634520" }} sx={{ fontSize: 40 }} />
+                  <div style={{ fontSize: "15px", color: "#634520" }}>Build Pc</div>
+                </Link>
+              </div>
+              <div className="col-md-2 col-1 d-flex align-items-center">
+                <Link className="navbar-brand" to="/sale">
+                  <LoyaltyTwoToneIcon style={{ color: "#634520" }} sx={{ fontSize: 40 }} />
+                  <div style={{ fontSize: "15px", color: "#634520" }}>Khuyến Mãi</div>
                 </Link>
               </div>
             </div>

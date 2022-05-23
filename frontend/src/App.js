@@ -16,15 +16,20 @@ import OrderScreen from "./screens/OrderScreen";
 import NotFound from "./screens/NotFound";
 import 'react-toastify/dist/ReactToastify.css';
 import PrivateRouter from "./screens/PrivateRouter";
+import BuidPC from "./screens/BuidPC";
+import Sale from "./screens/Sale";
 
 const App = () => {
   return (
     <Router>
       <Switch>
         <Route path="/" component={HomeScreen} exact />
+        <Route path="/search/:keyword" component={HomeScreen} exact />
         <Route path="/products/:id" component={SingleProduct} />
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
+        <Route path="/buildpc" component={BuidPC} />
+        <Route path="/sale" component={Sale} />
         <PrivateRouter path="/profile" component={ProfileScreen} />
         <Route path="/cart/:id?" component={CartScreen} />
         <PrivateRouter path="/shipping" component={ShippingScreen} />
