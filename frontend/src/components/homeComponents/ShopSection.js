@@ -9,7 +9,7 @@ import Message from "../LoadingError/Error";
 
 const ShopSection = (props) => {
 
-  const { keyword } = props;
+  const { keyword, pagenumber } = props;
 
   const dispatch = useDispatch();
 
@@ -18,8 +18,8 @@ const ShopSection = (props) => {
   const { loading, error, products } = productList;
 
   useEffect(() => {
-    dispatch(listProduct(keyword))
-  }, [dispatch, keyword]);
+    dispatch(listProduct(keyword, pagenumber))
+  }, [dispatch, keyword, pagenumber]);
 
   return (
     <>

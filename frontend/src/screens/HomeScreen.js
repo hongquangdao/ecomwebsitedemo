@@ -7,11 +7,12 @@ import Footer from "./../components/Footer";
 
 const HomeScreen = ({ match }) => {
   const keyword = match.params.keyword;
+  const pagenumber = match.params.pagenumber;
   window.scrollTo(0, 0);
   return (
     <div>
       <Header />
-      <ShopSection keyword={keyword} />
+      <ShopSection keyword={keyword} pagenumber={pagenumber} />
       <CalltoActionSection />
       <ContactInfo />
       <Footer />
