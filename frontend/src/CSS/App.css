@@ -55,15 +55,18 @@ textarea:focus {
   margin-right: 6rem;
   font-size: 15px;
 }
+
 .Announcement .col-12 a {
   color: white;
   margin-right: 2rem;
   font-size: 15px;
 }
+
 .cart-announcement :hover {
   margin: 0 15px;
   border-bottom: solid 2px #634520;
 }
+
 .logo-user :hover {
   border-bottom: solid 2px #634520;
 }
@@ -155,6 +158,11 @@ textarea:focus {
   margin: 0 auto;
   padding-bottom: 6%;
   padding-top: 2%;
+}
+
+.section-title {
+  font-weight: '900';
+  color: #644324;
 }
 
 .sidebar_item {
