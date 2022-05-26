@@ -26,7 +26,7 @@ const ShopSection = (props) => {
       <div className="container">
         <div className="section">
           <div className="section-title">
-            <h1 >Sản phẩm nổi bật </h1>
+            <h1 >Sản phẩm bán chạy </h1>
           </div>
           <div className="row">
             <div className="col-lg-12 col-md-12 article">
